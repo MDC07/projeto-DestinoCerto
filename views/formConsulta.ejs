@@ -4,67 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Passeios</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="http://localhost:3000/css/estiloconsulta.css">
 </head>
 <body>
     <header>
         <h1>Consulta de passeios</h1>
     </header>
     <main>
-        <form name="excluir" action="/passeioss/remover?_method=DELETE" method="post">>
-            <table border="1">
+        <form name="excluir" action="/passeios/remover?_method=DELETE" method="post">
+            <table>
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="checkBoxAll"> </th>
                         <th>Local </th>
-                        <th>Data </th>
+                        <th>Data</th>
                         <th>Preço </th>
-                        <th>Descrição </th>
+                        <th>Número de vagas</th>
+                        <th>Tipo de passeio</th>
+                        <th>Idioma</th>
+                        <th>Guia Responsável</th>
+                        <th>Serviços inclusos</th>
+                        <th>Descrição</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% passeios.forEach((passeio)=> { %>
+                    <% passeio.forEach((passeio) => { %>
                         <tr>
                             <td align="center"> <input type="checkbox" name="id" value="<%= passeio.id %>"> </td>
-                            <td> <a href="/passeios/form/<%= passeio.id %>">
+                            <td> <a href="/passeios/formAtualiza/<%= passeio.id %>">
                                     <%= passeio.local %>
                                 </a></td>
                             <td>
-                                <%= passeio.valor %>
+                                <%= new Date(passeio.data).toLocaleDateString('pt-BR') %>
+                            </td>
+                            <td>
+                                R$ <%= parseFloat(passeio.valor).toFixed(2).replace('.', ',') %>
+                            </td>
+                            <td>
+                                <%= passeio.vagas %>
+                            </td>
+                            <td>
+                                <%= passeio.tipo %>
+                            </td>
+                            <td>
+                                <%= passeio.idioma %>
+                            </td>
+                            <td>
+                                <%= passeio.guia %>
+                            </td>
+                            <td>
+                                <%= passeio.servico %>
                             </td>
                             <td>
                                 <%= passeio.descricao %>
                             </td>
                         </tr>
-                        <% }) %>
+                    <% }) %>
                 </tbody>
             </table>
-            <input type="submit" value="Excluir" />
+            <input type="submit" value="Excluir"/>
         </form>
     </main>
     <footer>
         <ul>
-            <li><a href="/menuPrincipal.ejs">Voltar</a></li>
-            <li><a href="/formAtualiza.ejs">Atualizar Passeios</a></li>
+            <li><a href="http://localhost:3000/">Voltar</a></li>
         </ul>
     </footer>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js">
-    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
             // add multiple select / deselect functionality
             $("#checkBoxAll").click(function () {
-                $('.checkBox').attr('checked', this.checked);
+                $('.checkBox').prop('checked', this.checked);
             });
-            // if all checkbox are selected, check the selectall checkbox  also        
 
             $(".checkBox").click(function () {
                 if ($(".checkBox").length == $(".checkBox:checked").length) {
-                    $("#checkBoxAll").attr("checked", "checked");
-                }
-                else {
-                    $("#checkBoxAll").removeAttr("checked");
+                    $("#checkBoxAll").prop("checked", true);
+                } else {
+                    $("#checkBoxAll").prop("checked", false);
                 }
             });
         });
