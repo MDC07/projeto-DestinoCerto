@@ -1,6 +1,6 @@
 const Passeio = require('../../backend/passeio');
 
-const db = require('../../database/conexao');
+const db = require('../../database/database');
 
 const passeio = new Passeio(db);
 
@@ -11,24 +11,53 @@ class PasseioControlador {
         }
     }    
 
-    listaPasseios() {
+    listaPasseio() {
         return function(req, resp) {
             passeio.lista()
                  .then(passeios => resp.render('formConsulta', { passeio: passeios }))
                  .catch(erro => console.log(erro));
         };
+
+        
+    }
+    
+    listaVenda() {
+
+        return function(req, resp) {
+
+            passeio.lista()
+                 .then(passeios => resp.render('/passeios', {passeio: passeios}))
+                 .catch(erro => console.log(erro));
+        };
+
     }
 
     apresentaFormCadastroPasseio() {
         return function(req, resp) {
-            resp.render('formCadastro', {passeio: {}});
+            resp.render('formCadastro');
+        }
+    }
+
+    apresentaFormCadastraVenda() {
+        return function(req, resp) {
+            resp.render('formCadastraVenda');
         }
     }
 
     adicionaPasseio() {
         return function(req, resp) {  
         passeio.adiciona(req.body)
-             .then(resp.redirect('/passeios'))
+             .then(resp.redirect('/passeios/formConsulta'))
+             .catch(erro => console.log(erro));
+        }
+    }
+
+    adicionaVenda() {
+
+        return function(req, resp) {  
+
+        passeio.adicionaVenda(req.body)
+             .then(() => resp.redirect('/passeios/form'))
              .catch(erro => console.log(erro));
         }
     }
@@ -43,10 +72,10 @@ class PasseioControlador {
                 passeio.remove(valores[i])
                      .catch(erro => console.log(erro));
               }
-              res.redirect('/passeios');
+              res.redirect('/passeios/formConsulta');
             } else {          
                 passeio.remove(valores)
-                     .then(resp.redirect('/passeios'))
+                     .then(resp.redirect('/passeios/formConsulta'))
                      .catch(erro => console.log(erro));
             }        
         }
@@ -64,7 +93,7 @@ class PasseioControlador {
     atualizaPasseio() {
         return function(req, resp) { 
             passeio.atualiza(req.body)
-                 .then(resp.redirect('/passeios'))
+                 .then(resp.redirect('/passeios/formConsulta'))
                  .catch(erro => console.log(erro));
         }
     }   
