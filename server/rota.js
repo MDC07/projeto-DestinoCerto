@@ -1,4 +1,3 @@
-
 let express = require('express');
 let methodOverride = require('method-override');
 let app = express();
@@ -15,15 +14,15 @@ app.use(express.static('views'));
 
 const PasseioControlador = require('./controlador/passeio-controlador');
 const passeioControlador = new PasseioControlador();
-
-
 class Rota {
 
     static iniciar() {
 
       this.definirRotaPaginaInicial(app); 
       this.definirRotaCadastro(app);
-      this.definirRotaConsulta(app);  
+      this.definirRotaConsulta(app); 
+      this.definirRotaCadastroVenda(app);
+      this.definirRotaConsultaVenda(app);
       this.definirRotaExclusao(app);                       
       this.definirRotaAtualizacao(app); 
     }
@@ -35,16 +34,28 @@ class Rota {
 
     static definirRotaCadastro(app) {
 
-      app.route('/passeios/form')
+      app.route('/passeios/formCadastro')
          .get(passeioControlador.apresentaFormCadastroPasseio())
          .post(passeioControlador.adicionaPasseio());              
    }
 
-   static definirRotaConsulta(app) {
 
-        app.route('/passeios/form')
-            .get(passeioControlador.apresentaFormConsultaPasseio())
-            .post(passeioControlador.consultaPasseio());              
+   static definirRotaCadastroVenda(app) {
+
+      app.route('/passeios/form')
+         .get(passeioControlador.apresentaFormCadastraVenda())
+         .post(passeioControlador.adicionaVenda());              
+   }
+
+
+   static definirRotaConsulta(app) {
+      app.get('/passeios/formConsulta', passeioControlador.listaPasseio())
+      
+   }
+   
+   static definirRotaConsultaVenda(app) {
+   app.get('/passeios', passeioControlador.listaVenda());
+
 }
 
    static definirRotaExclusao(app) {
@@ -54,8 +65,8 @@ class Rota {
 
    static definirRotaAtualizacao(app) {
 
-      app.get('/passeios/form/:id', passeioControlador.recuperaPasseioPorId());
-      app.put('/passeios/form/atualizar', passeioControlador.atualizaPasseio());
+      app.get('/passeios/formAtualiza/:id', passeioControlador.recuperaPasseioPorId());
+      app.put('/passeios/formAtualiza/atualizar', passeioControlador.atualizaPasseio());
    }
 
    static get APP() {
@@ -66,4 +77,3 @@ class Rota {
 }
 
 module.exports = Rota;
-p
