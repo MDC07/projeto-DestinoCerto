@@ -7,32 +7,47 @@ CREATE TABLE IF NOT EXISTS passeios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     local TEXT NOT NULL, 
     valor REAL NOT NULL,
+    data TEXT NOT NULL,
+    vagas REAL NOT NULL,
+    tipo TEXT NOT NULL,
+    idioma TEXT NOT NULL,
+    guia TEXT NOT NULL,
+    transporte BOOLEAN,
+    alimentacao  BOOLEAN,
+    cafedamanha  BOOLEAN,
+    almoco  BOOLEAN,
+    fotografia  BOOLEAN,
+    primeirossocorros  BOOLEAN,
+    equipamentos  BOOLEAN,
+    lembrancas  BOOLEAN,
+    criancas  BOOLEAN,
+    interprete  BOOLEAN,
     descricao TEXT DEFAULT ('') NOT NULL
 )
 `;
 
-const INSERIR_PASSEIO_1 = 
+const CRIAR_TABELA_VENDA = 
 `
-INSERT INTO passeios (
-    local,
-    valor,
-    descricao
-) SELECT 'Node na prática', 30.0, 'Como desenvolver com Node.' WHERE NOT EXISTS (SELECT * FROM passeios WHERE local = 'Node na prática')
-`;
-
-const INSERIR_PASSEIO_2 = 
-`
-INSERT INTO passeios (
-    local, 
-    valor,
-    descricao
-) SELECT 'JavaScript na prática', 40.0, 'Como desenvolver com JavaScript.' WHERE NOT EXISTS (SELECT * FROM passeios WHERE titulo = 'JavaScript na prática')
+CREATE TABLE IF NOT EXISTS vendas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nomeCliente TEXT NOT NULL,
+    destino TEXT NOT NULL,
+    dataViagem TEXT NOT NULL, 
+    numeroPessoas INTEGER NOT NULL, 
+    tipoPacote VARCHAR(100) NOT NULL,
+    valor REAL NOT NULL,
+    total REAL NOT NULL,
+    observacoes TEXT DEFAULT '' 
+    
+)
 `;
 
 bd.serialize(() => {
     bd.run(CRIAR_TABELA_PASSEIO);
-    bd.run(INSERIR_PASSEIO_1);
-    bd.run(INSERIR_PASSEIO_2);
+});
+
+bd.serialize(() => {
+    bd.run(CRIAR_TABELA_VENDA);
 });
 
 process.on('SIGINT', () =>
